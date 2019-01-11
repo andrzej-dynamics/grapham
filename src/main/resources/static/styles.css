@@ -1,0 +1,18 @@
+#grapham {
+    background-color: #bb9fe6;
+    border-radius: 2mm;
+}
+
+.row {
+    text-align: center;
+}
+
+.links line {
+    stroke: #999;
+    stroke-opacity: 0.6;
+}
+
+.nodes circle {
+    stroke: black;
+    stroke-width: 0px;
+}
