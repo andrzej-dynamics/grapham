@@ -1,41 +1,47 @@
 package com.dynamics.andrzej.grapham;
 import lombok.extern.slf4j.Slf4j;
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.implementations.SingleGraph;
-import org.graphstream.ui.view.Viewer;
-import org.graphstream.ui.view.ViewerListener;
-import org.graphstream.ui.view.ViewerPipe;
+import org.jgrapht.Graph;
+import org.jgrapht.generate.CompleteGraphGenerator;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedAcyclicGraph;
+import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.traverse.DepthFirstIterator;
+import org.jgrapht.util.SupplierUtil;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.Iterator;
 
 @Slf4j
+@SpringBootApplication
 public class Grapham {
-    public static void main(String[] args) {
-        log.info("Hello");
-        final SingleGraph first = new SingleGraph("First");
-        first.addNode("A");
-        first.addNode("B");
-        first.addNode("C");
-        first.addEdge("AB", "A", "B");
-        first.addEdge("BC", "B", "C");
-        first.addEdge("CA", "C", "A");
+    // number of vertices
+    private static final int SIZE = 10;
 
-        final Viewer viewer = first.display();
-        final ViewerPipe viewerPipe = viewer.newViewerPipe();
-        viewerPipe.addSink(first);
-        viewerPipe.addViewerListener(new ViewerListener() {
-            @Override
-            public void viewClosed(String s) {
+    /**
+     * Main demo entry point.
+     *
+     * @param args command line arguments
+     */
+    public static void main(String[] args)
+    {
+        log.info("Starting Grapham...");
+        SpringApplication.run(Grapham.class);
+        // Create the graph object
+//        Graph<String, DefaultEdge> completeGraph = new DirectedAcyclicGraph<>(vSupplier, SupplierUtil.createDefaultEdgeSupplier(), false);
 
-            }
+        // Create the CompleteGraphGenerator object
+//        CompleteGraphGenerator<String, DefaultEdge> completeGenerator = new CompleteGraphGenerator<>(SIZE);
 
-            @Override
-            public void buttonPushed(String s) {
+        // Use the CompleteGraphGenerator object to make completeGraph a
+        // complete graph with [size] number of vertices
+//        completeGenerator.generateGraph(completeGraph);
 
-            }
-
-            @Override
-            public void buttonReleased(String s) {
-
-            }
-        });
+        // Print out the graph to be sure it's really complete
+//        Iterator<String> iter = new DepthFirstIterator<>(completeGraph);
+//        while (iter.hasNext()) {
+//            String vertex = iter.next();
+//            log.info("Vertex " + vertex + " is connected to: " + completeGraph.edgesOf(vertex).toString());
+//        }
     }
 }
