@@ -1,6 +1,8 @@
 package com.dynamics.andrzej.grapham.controllers;
 
 import com.dynamics.andrzej.grapham.Grapham;
+import com.dynamics.andrzej.grapham.dtos.EdgeDTO;
+import com.dynamics.andrzej.grapham.dtos.GraphDTO;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.io.FileSystemResource;
@@ -27,6 +29,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.testng.Assert.*;
@@ -38,18 +41,25 @@ public class FileLoaderControllerTest {
     }
 
     @Test
-    public void testLoadFile() throws URISyntaxException, IOException {
-        final URI graphUri = getClass().getClassLoader().getResource("graph.txt").toURI();
-
+    public void testLoadFile() throws URISyntaxException {
         final RestTemplate restTemplate = new RestTemplate();
         String url = "http://localhost:12345/file";
+
         final HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        final URI graphUri = getClass().getClassLoader().getResource("graph.txt").toURI();
         final FileSystemResource fileSystemResource = new FileSystemResource(new File(graphUri));
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", fileSystemResource);
+
         final HttpEntity<MultiValueMap<String, Object>> multiValueMapHttpEntity = new HttpEntity<>(body, httpHeaders);
-        final ResponseEntity<String> stringResponseEntity = restTemplate.postForEntity(url, multiValueMapHttpEntity, String.class);
+        final GraphDTO graph = restTemplate.postForEntity(url, multiValueMapHttpEntity, GraphDTO.class).getBody();
+        final List<EdgeDTO> edges = graph.getE();
+        final List<Integer> vertices = graph.getV();
+        assertNotNull(graph);
+        assertEquals(edges.size(), 10);
+        assertEquals(vertices.size(), 10);
     }
 
     @Test
