@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 import static org.testng.Assert.*;
 
 public class GraphServiceTest {
-    private GraphService graphService = new GraphService();
+    private GraphService graphService = new GraphService(new GraphMapper());
 
     @BeforeMethod
     public void setup() throws IOException, URISyntaxException {
@@ -98,5 +98,28 @@ public class GraphServiceTest {
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testSwitchInvalidEdges2() {
         graphService.switchSubgraphs(3, 8);
+    }
+
+    @Test
+    public void testCanRemove() {
+        assertTrue(graphService.canRemove(0, 3));
+        assertFalse(graphService.canRemove(3, 7));
+    }
+
+    @Test
+    public void testCanMove() {
+        assertTrue(graphService.canMove(0, 1, 4));
+        assertFalse(graphService.canMove(3, 5, 0));
+        assertFalse(graphService.canMove(3, 6, 1));
+    }
+
+    @Test
+    public void testRemove() {
+        assertNotNull(graphService.remove(0, 3));
+    }
+
+    @Test
+    public void testMove() {
+        assertNotNull(graphService.move(0, 1, 4));
     }
 }

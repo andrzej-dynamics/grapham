@@ -3,6 +3,7 @@ package com.dynamics.andrzej.grapham.controllers;
 import com.dynamics.andrzej.grapham.Edge;
 import com.dynamics.andrzej.grapham.dtos.GraphDTO;
 import com.dynamics.andrzej.grapham.services.GraphLoader;
+import com.dynamics.andrzej.grapham.services.GraphMapper;
 import com.dynamics.andrzej.grapham.services.GraphService;
 import lombok.extern.slf4j.Slf4j;
 import org.jgrapht.Graph;
@@ -23,10 +24,12 @@ import java.io.IOException;
 @RestController
 public class FileLoaderController {
     private final GraphLoader graphLoader;
+    private final GraphMapper graphMapper;
     private final GraphService graphService;
 
-    public FileLoaderController(GraphLoader graphLoader, GraphService graphService) {
+    public FileLoaderController(GraphLoader graphLoader, GraphMapper graphMapper, GraphService graphService) {
         this.graphLoader = graphLoader;
+        this.graphMapper = graphMapper;
         this.graphService = graphService;
     }
 
@@ -35,7 +38,7 @@ public class FileLoaderController {
         try {
             log.info("Got file to load graph: {}", file.getName());
             final DirectedAcyclicGraph<Integer, Edge> graph = graphLoader.loadGraph(file.getBytes());
-            final GraphDTO dto = graphLoader.map(graph);
+            final GraphDTO dto = graphMapper.map(graph);
             graphService.setGraph(graph);
             return new ResponseEntity<>(dto, HttpStatus.OK);
         } catch (IllegalArgumentException | IOException e) {
