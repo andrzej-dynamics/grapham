@@ -25,31 +25,31 @@ public class VerticesController {
     }
 
     @GetMapping("/remove")
-    public GraphDTO removeVertex(int vertex) {
+    public GraphDTO removeVertex(@RequestParam("vertex") int vertex) {
         log.info("Removing vertex: {}", vertex);
         return graphService.removeVertex(vertex);
     }
 
     @GetMapping("/switch")
-    public GraphDTO switchSubgraphs(int source, int target) {
+    public GraphDTO switchSubgraphs(@RequestParam("source") int source, @RequestParam("target") int target) {
         log.info("Switching vertex: {} to {}", source, target);
         return graphService.switchSubgraphs(source, target);
     }
 
     @GetMapping("/add-edge")
-    public GraphDTO addEdge(int source, int target) {
+    public GraphDTO addEdge(@RequestParam("source") int source, @RequestParam("target") int target) {
         log.info("Adding edge: {} to: {}", source, target);
         return graphService.addEdge(source, target);
     }
 
     @GetMapping("/can-perform-single")
-    public ModificationVertexInfo canPerformVertexModification(int vertex) {
+    public ModificationVertexInfo canPerformVertexModification(@RequestParam("vertex") int vertex) {
         log.info("Checking whether can perform operations: {}", vertex);
         return graphService.canPerformVertexModification(vertex);
     }
 
     @GetMapping("/can-perform-double")
-    public ModificationBetweenVerticesInfo canPerformModificationBetweenVertices(int source, int target) {
+    public ModificationBetweenVerticesInfo canPerformModificationBetweenVertices(@RequestParam("source") int source, @RequestParam("target") int target) {
         log.info("Checking whether can perform operations between: {} and: {}", source, target);
         return graphService.canPerformModificationBetweenVertices(source, target);
     }

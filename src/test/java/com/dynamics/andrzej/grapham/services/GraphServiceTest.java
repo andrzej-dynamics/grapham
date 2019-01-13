@@ -1,12 +1,9 @@
 package com.dynamics.andrzej.grapham.services;
 
 import com.dynamics.andrzej.grapham.Edge;
-import org.jgrapht.Graph;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import sun.security.jgss.GSSCaller;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -102,24 +99,24 @@ public class GraphServiceTest {
 
     @Test
     public void testCanRemove() {
-        assertTrue(graphService.canRemove(0, 3));
-        assertFalse(graphService.canRemove(3, 7));
+        assertTrue(graphService.canRemoveEdge(0, 3));
+        assertFalse(graphService.canRemoveEdge(3, 7));
     }
 
     @Test
     public void testCanMove() {
-        assertTrue(graphService.canMove(0, 1, 4));
-        assertFalse(graphService.canMove(3, 5, 0));
-        assertFalse(graphService.canMove(3, 6, 1));
+        assertTrue(graphService.canMoveEdge(0, 1, 4));
+        assertFalse(graphService.canMoveEdge(3, 5, 0));
+        assertFalse(graphService.canMoveEdge(3, 6, 1));
     }
 
     @Test
     public void testRemove() {
-        assertNotNull(graphService.remove(0, 3));
+        assertNotNull(graphService.removeEdge(0, 3));
     }
 
     @Test
     public void testMove() {
-        assertNotNull(graphService.move(0, 1, 4));
+        assertNotNull(graphService.moveEdge(0, 1, 4));
     }
 }

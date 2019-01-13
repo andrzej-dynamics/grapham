@@ -101,7 +101,7 @@ public class GraphService {
         return new ModificationBetweenVerticesInfo(canAddEdge, canSwitchGraphs);
     }
 
-    public boolean canRemove(int source, int target) {
+    public boolean canRemoveEdge(int source, int target) {
         boolean canRemove = true;
         graph.removeEdge(source, target);
         if (graph.getAncestors(source).isEmpty() && graph.getDescendants(source).isEmpty()) {
@@ -113,16 +113,16 @@ public class GraphService {
         graph.addEdge(source, target);
         return canRemove;
     }
-    public GraphDTO remove(int source, int target) {
-        if (!canRemove(source, target)) {
+    public GraphDTO removeEdge(int source, int target) {
+        if (!canRemoveEdge(source, target)) {
             throw new IllegalArgumentException("cannot remove edge!");
         }
         graph.removeEdge(source, target);
         return graphMapper.map(graph);
     }
 
-    public boolean canMove(int source, int target, int newTarget) {
-        boolean canMove = canRemove(source, target);
+    public boolean canMoveEdge(int source, int target, int newTarget) {
+        boolean canMove = canRemoveEdge(source, target);
         try {
             graph.removeEdge(source, target);
             graph.addEdge(source, newTarget);
@@ -135,8 +135,8 @@ public class GraphService {
         return canMove;
     }
 
-    public GraphDTO move(int source, int target, int newTarget) {
-        if (!canMove(source, target, newTarget)) {
+    public GraphDTO moveEdge(int source, int target, int newTarget) {
+        if (!canMoveEdge(source, target, newTarget)) {
             throw new IllegalArgumentException("cannot move edge!");
         }
         graph.removeEdge(source, target);
