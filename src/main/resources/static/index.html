@@ -6,15 +6,49 @@
     <link rel="stylesheet" type="text/css" href="styles.css"/>
     <script type="text/javascript" src="/webjars/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript" src="utils.js"></script>
     <script type="text/javascript" src="grapham.js"></script>
 </head>
 <body>
 <div class="container">
-    <div class="row"><div class="col">&nbsp;</div></div>
+    <div class="row">
+        <div class="col">&nbsp;</div>
+    </div>
     <div class="row">
         <div class="col">
-            <svg id="grapham" width="1024" height="768"></svg>
+            <svg id="grapham" width="1024" height="768">
+                <defs>
+                    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="2" orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,0 L0,4 L6,2 z" fill="darkorange" />
+                    </marker>
+                </defs>
+            </svg>
         </div>
+    </div>
+    <div class="row justify-content-md-center mt-1">
+        <form>
+            <div class="form-group">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="customFileLang" lang="pl">
+                    <label class="custom-file-label" for="customFileLang">Wybierz plik</label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div id="singleSelectedNodeOptions" class="row justify-content-md-center mt-1" hidden>
+        <button type="button" class="btn btn-outline-success">Dodaj wierzchołek skierowany do wybranego</button>
+        <button type="button" class="btn btn-outline-success">Dodaj wierzchołek skierowany od wybranego</button>
+        <button type="button" class="btn btn-outline-danger" disabled>Usuń wierchołek</button>
+    </div>
+    <div id="twoSelectedNodesOptions" class="row justify-content-md-center mt-1" hidden>
+        <button type="button" class="btn btn-outline-success" disabled>Dodaj krawędź</button>
+        <button type="button" class="btn btn-outline-warning" disabled>Zamień podgrafy</button>
+    </div>
+    <div id="edgeOptions" class="row justify-content-md-center mt-1" hidden>
+        <button type="button" class="btn btn-outline-danger" disabled>Usuń krawędź</button>
+    </div>
+    <div id="switchEdgeOptions" class="row justify-content-md-center mt-1" hidden>
+        <button type="button" class="btn btn-outline-warning" disabled>Zamień krawędź</button>
     </div>
 </div>
 </body>
