@@ -1,0 +1,20 @@
+Do zrobienia jest obsłgua modyfikacji wierzhołków:
+
+1. Wybranie wierzchołka wszystko GET
+ - request do /vertices/can-perform-single czy można go usunąć (włączenie guzika)
+ - dodanie wierchołka request /vertices/add source=wierchołek, direction=true/false
+ - usunięcie wierzchołka /vertices/remove vertex=wierchołek
+
+ 2. Dwa wierchołki GET
+  - request do /vertices/can-perform-double czy można zrobić switch czy można dodać krawędź
+  - dodanie krawędzi request /vertices/add-edge source=wierchołek, direction=true/false
+  - switch podgrafów /vertices/switch
+
+3. krawędz GET
+    - request do /edges/can-remove czy można usunąć
+    - usunięcie krawędzi request /edges/remove
+
+3. Zamiana krawędzi do wierchołka GET (wybranie krawedz, dwa wierzchołki)
+    - request do /edges/can-move
+    - zamiana krawędzi request /edges/move
+
