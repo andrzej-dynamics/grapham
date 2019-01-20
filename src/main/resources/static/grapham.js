@@ -27,7 +27,11 @@ $(document).ready(function () {
         let node = firstSelectedNode ? firstSelectedNode : secondSelectedNode;
         const index = node.name.substr(1);
         get('/vertices/remove', {vertex: index}, (data) => onLoadGraphSuccess(data), (error) => console.log(error));
-
+    });
+    $("#deleteEdgeButton").click(() => {
+        const source = selectedEdge.source.name.substr(1);
+        const target = selectedEdge.target.name.substr(1);
+        get('/edges/remove', {source: source, target: target}, (data) => onLoadGraphSuccess(data), (error) => console.log(error));
     });
 
 });
@@ -156,8 +160,7 @@ function loadGraph() {
     zoomHandler(svg);
 }
 
-function myFunction(data) {
-    console.log("Sprawdzam YUPII")
+function ifDeleteVertices(data) {
     if (data.canRemove) {
         document.getElementById("deleteNodeButton").disabled = false;
     } else {
@@ -182,7 +185,7 @@ function onClickNode(selectedNode, index) {
         firstSelectedNode = selectedNode;
         d3.select(this).attr("fill", '#4b1515');
         selectionChanged = true;
-        get('/vertices/can-perform-single', {vertex: index}, (data) => myFunction(data), (error) => console.log(error));
+        get('/vertices/can-perform-single', {vertex: index}, (data) => ifDeleteVertices(data), (error) => console.log(error));
 
     } else if (!secondSelectedNode) {
         secondSelectedNode = selectedNode;
@@ -207,6 +210,15 @@ function onNodeMouseOut(selectedNode, i) {
     }
 }
 
+function ifDeleteEdge(data) {
+    if (data) {
+        document.getElementById("deleteEdgeButton").disabled = false;
+    } else {
+        document.getElementById("deleteEdgeButton").disabled = true;
+    }
+
+}
+
 function onClickEdge(edge, index) {
     console.log(edge);
     if (selectedEdge === edge) {
@@ -214,6 +226,13 @@ function onClickEdge(edge, index) {
         d3.select(this).attr("fill", '#f9ff0b');
         showManipulationOptions();
     } else if (!selectedEdge) {
+
+        const source = edge.source.name.substr(1);
+        const target = edge.target.name.substr(1);
+
+        get('/edges/can-remove', {source: source, target: target}, (data) => ifDeleteEdge(data), (error) => console.log(error));
+
+
         selectedEdge = edge;
         d3.select(this).attr("fill", '#4b1515');
         showManipulationOptions();
