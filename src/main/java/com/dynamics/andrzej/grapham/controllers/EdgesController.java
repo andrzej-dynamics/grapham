@@ -18,6 +18,12 @@ public class EdgesController {
         this.graphService = graphService;
     }
 
+    @GetMapping("/add-edge")
+    public GraphDTO addEdge(@RequestParam("source") int source, @RequestParam("target") int target) {
+        log.info("Adding edge: {} to: {}", source, target);
+        return graphService.addEdge(source, target);
+    }
+
     @GetMapping("/can-remove")
     public boolean canRemove(@RequestParam("source") int source, @RequestParam("target") int target) {
         log.info("Checking whether can remove edge: {}, {}", source, target);

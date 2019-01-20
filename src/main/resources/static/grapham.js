@@ -33,6 +33,14 @@ $(document).ready(function () {
         const target = selectedEdge.target.name.substr(1);
         get('/edges/remove', {source: source, target: target}, (data) => onLoadGraphSuccess(data), (error) => console.log(error));
     });
+    $("#addEdgeTwoNodes").click(() => {
+
+        let node = firstSelectedNode ? firstSelectedNode : secondSelectedNode;
+        const index = node.name.substr(1);
+        const target = secondSelectedNode.name.substr(1);
+        get('/edges/add-edge', {source: index, target: target}, (data) => onLoadGraphSuccess(data), (error) => console.log(error));
+
+    });
 
 });
 
@@ -166,7 +174,20 @@ function ifDeleteVertices(data) {
     } else {
         document.getElementById("deleteNodeButton").disabled = true;
     }
+}
 
+function ifSwapPosibleVertices(data) {
+    if (data.canAddEdge) {
+        document.getElementById("addEdgeTwoNodes").disabled = true;
+    } else {
+        document.getElementById("addEdgeTwoNodes").disabled = false;
+    }
+
+   // if (data.canSwitchGraphs) {
+    //    document.getElementById("SwitchGraphs").disabled = false;
+    //} else {
+    //    document.getElementById("SwitchGraphs").disabled = true;
+    //}
 }
 
 function onClickNode(selectedNode, index) {
@@ -191,6 +212,10 @@ function onClickNode(selectedNode, index) {
         secondSelectedNode = selectedNode;
         d3.select(this).attr("fill", '#4b1515');
         selectionChanged = true;
+
+        const source = firstSelectedNode.name.substr(1);
+        const target = secondSelectedNode.name.substr(1);
+        get('/vertices/can-perform-double', {source: source, target: target}, (data) => ifSwapPosibleVertices(data), (error) => console.log(error));
     }
 
     if (selectionChanged) {
