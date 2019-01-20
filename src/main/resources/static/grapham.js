@@ -10,7 +10,7 @@ let simulation;
 let firstSelectedNode;
 let secondSelectedNode;
 let selectedEdge;
-// ---> JQuery Handlers
+// ---> JQuery Handlersdodaje
 $(document).ready(function () {
     $('#customFileLang').change(onChangeFileInput);
     $("#addNodeDirectedToSelectedNodeButton").click(() => {
@@ -23,6 +23,13 @@ $(document).ready(function () {
         const index = node.name.substr(1);
         get('/vertices/add', {source: index, direction: 0}, (data) => onLoadGraphSuccess(data), (error) => console.log(error));
     });
+    $("#deleteNodeButton").click(() => {
+        let node = firstSelectedNode ? firstSelectedNode : secondSelectedNode;
+        const index = node.name.substr(1);
+        get('/vertices/remove', {vertex: index}, (data) => onLoadGraphSuccess(data), (error) => console.log(error));
+
+    });
+
 });
 
 function onChangeFileInput() {
@@ -149,8 +156,19 @@ function loadGraph() {
     zoomHandler(svg);
 }
 
+function myFunction(data) {
+    console.log("Sprawdzam YUPII")
+    if (data.canRemove) {
+        document.getElementById("deleteNodeButton").disabled = false;
+    } else {
+        document.getElementById("deleteNodeButton").disabled = true;
+    }
+
+}
+
 function onClickNode(selectedNode, index) {
     console.log(selectedNode);
+
     let selectionChanged = false;
     if (firstSelectedNode === selectedNode) {
         firstSelectedNode = undefined;
@@ -164,6 +182,8 @@ function onClickNode(selectedNode, index) {
         firstSelectedNode = selectedNode;
         d3.select(this).attr("fill", '#4b1515');
         selectionChanged = true;
+        get('/vertices/can-perform-single', {vertex: index}, (data) => myFunction(data), (error) => console.log(error));
+
     } else if (!secondSelectedNode) {
         secondSelectedNode = selectedNode;
         d3.select(this).attr("fill", '#4b1515');

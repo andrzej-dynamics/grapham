@@ -1,6 +1,6 @@
 package com.dynamics.andrzej.grapham.dtos;
 
-import lombok.*;
+        import lombok.*;
 
 @AllArgsConstructor
 @Data
