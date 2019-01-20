@@ -42,6 +42,15 @@ $(document).ready(function () {
 
     });
 
+    $("#SwitchGraphs").click(() => {
+
+        let node = firstSelectedNode ? firstSelectedNode : secondSelectedNode;
+        const index = node.name.substr(1);
+        const target = secondSelectedNode.name.substr(1);
+        get('/vertices/switch', {source: index, target: target}, (data) => onLoadGraphSuccess(data), (error) => console.log(error));
+
+    });
+
 });
 
 function onChangeFileInput() {
@@ -183,11 +192,11 @@ function ifSwapPosibleVertices(data) {
         document.getElementById("addEdgeTwoNodes").disabled = false;
     }
 
-   // if (data.canSwitchGraphs) {
-    //    document.getElementById("SwitchGraphs").disabled = false;
-    //} else {
-    //    document.getElementById("SwitchGraphs").disabled = true;
-    //}
+   if (data.canSwitchGraphs) {
+        document.getElementById("SwitchGraphs").disabled = false;
+    } else {
+        document.getElementById("SwitchGraphs").disabled = true;
+    }
 }
 
 function onClickNode(selectedNode, index) {
