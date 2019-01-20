@@ -13,6 +13,16 @@ let selectedEdge;
 // ---> JQuery Handlers
 $(document).ready(function () {
     $('#customFileLang').change(onChangeFileInput);
+    $("#addNodeDirectedToSelectedNodeButton").click(() => {
+        let node = firstSelectedNode ? firstSelectedNode : secondSelectedNode;
+        const index = node.name.substr(1);
+        get('/vertices/add', {source: index, direction: 1}, (data) => onLoadGraphSuccess(data), (error) => console.log(error));
+    });
+    $("#addNodeDirectedFromSelectedNodeButton").click(() => {
+        let node = firstSelectedNode ? firstSelectedNode : secondSelectedNode;
+        const index = node.name.substr(1);
+        get('/vertices/add', {source: index, direction: 0}, (data) => onLoadGraphSuccess(data), (error) => console.log(error));
+    });
 });
 
 function onChangeFileInput() {
@@ -40,6 +50,8 @@ function resetValues() {
     simulation = undefined;
     firstSelectedNode = undefined;
     secondSelectedNode = undefined;
+    selectedEdge = undefined;
+    showManipulationOptions();
 }
 
 function showManipulationOptions() {
