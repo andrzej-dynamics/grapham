@@ -1,10 +1,10 @@
-#Projekt grafu by Andrzey Dynamics©®
+# Projekt grafu by Andrzey Dynamics©®
 Aplikacja **klient** (wizualizacja grafu) - **serwer** (obliczenia, przechowywanie stanu grafu)
 ***
-####Serwer
+#### Serwer
 REST API w Spring'u. Endpoint'y do obsługi modyfikacji na wierzchołkach i krawędziach
 ***
-####Klient
+#### Klient
 Biblioteka w `D3.js` z `JQuery`
 
 Funkcje pomocnicze dla wysyłania zapytań http: `utils.js`
