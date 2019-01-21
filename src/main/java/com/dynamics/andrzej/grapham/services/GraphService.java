@@ -12,9 +12,8 @@ import org.jgrapht.alg.shortestpath.AllDirectedPaths;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -47,8 +46,8 @@ public class GraphService {
         if (graph == null || !graph.containsVertex(vertex)) {
             throw new IllegalArgumentException("Graph not loaded or source does not exists!");
         }
-        if (!graph.getDescendants(vertex).isEmpty()) {
-            throw new IllegalArgumentException("Vertex has descendants, cannot be removed!");
+        if (!canRemoveVertex(vertex)) {
+            throw new IllegalArgumentException("Vertex cannot be removed!");
         }
         graph.removeVertex(vertex);
         return graphMapper.map(graph);
@@ -84,7 +83,7 @@ public class GraphService {
     }
 
     public ModificationVertexInfo canPerformVertexModification(int vertex) {
-        boolean canRemove = graph.getDescendants(vertex).isEmpty();
+        boolean canRemove = canRemoveVertex(vertex);
         return new ModificationVertexInfo(canRemove);
     }
 
@@ -113,6 +112,7 @@ public class GraphService {
         graph.addEdge(source, target);
         return canRemove;
     }
+
     public GraphDTO removeEdge(int source, int target) {
         if (!canRemoveEdge(source, target)) {
             throw new IllegalArgumentException("cannot remove edge!");
@@ -144,6 +144,16 @@ public class GraphService {
         return graphMapper.map(graph);
     }
 
+    public boolean isSingleGraph() {
+        Iterator<Integer> iterator = graph.vertexSet().iterator();
+        if (!iterator.hasNext()) {
+            throw new IllegalArgumentException("Fill graph first!");
+        }
+        Set<Integer> vertices = new HashSet<>();
+        findAllVerticesInBranch(iterator.next(), vertices);
+        return graph.vertexSet().size() == vertices.size();
+    }
+
     private void addIncomingEdges(Set<Edge> incomingEdges, int vertex) {
         for (Edge e : incomingEdges) {
             graph.addEdge(e.source(), vertex);
@@ -153,6 +163,35 @@ public class GraphService {
     private void addOutgoingEdges(Set<Edge> outgoingEdges, int vertex) {
         for (Edge e : outgoingEdges) {
             graph.addEdge(vertex, e.target());
+        }
+    }
+
+    private boolean canRemoveVertex(int vertex) {
+        final Set<Edge> incomingSource = new HashSet<>(graph.incomingEdgesOf(vertex));
+        final Set<Edge> outgoingSource = new HashSet<>(graph.outgoingEdgesOf(vertex));
+
+        graph.removeVertex(vertex);
+
+        boolean canRemove = isSingleGraph();
+
+        graph.addVertex(vertex);
+
+        addIncomingEdges(incomingSource, vertex);
+        addOutgoingEdges(outgoingSource, vertex);
+
+        return canRemove;
+    }
+
+    private void findAllVerticesInBranch(int v, Set<Integer> vertices) {
+        Set<Integer> neighbours = graph.getDescendants(v);
+        neighbours.addAll(graph.getAncestors(v));
+
+        for (int candidate : neighbours) {
+            if (vertices.contains(candidate)) {
+                continue;
+            }
+            vertices.add(candidate);
+            findAllVerticesInBranch(candidate, vertices);
         }
     }
 

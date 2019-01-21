@@ -215,7 +215,8 @@ function onClickNode(selectedNode, index) {
         firstSelectedNode = selectedNode;
         d3.select(this).attr("fill", '#4b1515');
         selectionChanged = true;
-        get('/vertices/can-perform-single', {vertex: index}, (data) => ifDeleteVertices(data), (error) => console.log(error));
+        const v = selectedNode.name.substr(1);
+        get('/vertices/can-perform-single', {vertex: v}, (data) => ifDeleteVertices(data), (error) => console.log(error));
 
     } else if (!secondSelectedNode) {
         secondSelectedNode = selectedNode;

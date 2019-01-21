@@ -1,6 +1,7 @@
 package com.dynamics.andrzej.grapham.services;
 
 import com.dynamics.andrzej.grapham.Edge;
+import com.dynamics.andrzej.grapham.dtos.ModificationVertexInfo;
 import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -102,6 +103,27 @@ public class GraphServiceTest {
         assertTrue(graphService.canRemoveEdge(0, 3));
         assertFalse(graphService.canRemoveEdge(3, 7));
     }
+
+    @Test
+    public void testCanRemove2() {
+        graphService.addVertex(7, true);
+        ModificationVertexInfo modificationVertexInfo = graphService.canPerformVertexModification(7);
+        assertFalse(modificationVertexInfo.isCanRemove());
+    }
+
+    @Test
+    public void testIsSingleGraph() {
+        graphService.addVertex(7, true);
+        graphService.removeVertex(7);
+        assertFalse(graphService.isSingleGraph());
+    }
+
+    @Test
+    public void testIsSingleGraph2() {
+        graphService.addVertex(7, true);
+        assertTrue(graphService.isSingleGraph());
+    }
+
 
     @Test
     public void testCanMove() {
