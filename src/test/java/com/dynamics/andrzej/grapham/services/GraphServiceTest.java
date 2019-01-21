@@ -111,7 +111,7 @@ public class GraphServiceTest {
         assertFalse(modificationVertexInfo.isCanRemove());
     }
 
-    @Test
+    @Test(expectedExceptions = IllegalArgumentException.class)
     public void testIsSingleGraph() {
         graphService.addVertex(7, true);
         graphService.removeVertex(7);
