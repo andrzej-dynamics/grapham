@@ -6,6 +6,25 @@ Aplikacja **klient** (wizualizacja grafu) - **serwer** (obliczenia, przechowywan
 2) Uruchomienie serwer z głowengo katalogu komendą: `java -jar grapham-1.0-SNAPSHOT.jar`
 3) Uruchomienie przez przeglądarkę: http://localhost:9888/ (zalecany Chrome)
 4) Wczytać przykładowy plik z głównego katalogu aplikacji (graph.txt)
+
+## Podstawowe funkcjonalności
+1. Wybranie wierzchołka operacje GET
+ - zapytanie do `/vertices/can-perform-single` czy można go usunąć (włączenie guzika)
+ - dodanie wierchołka zapytanie `/vertices/add?source=wierchołek&direction=true/false`
+ - usunięcie wierzchołka `/vertices/remove?vertex=wierchołek`
+
+ 2. Wybranie dwóch wierchołków GET
+  - zapytanie do `/vertices/can-perform-double` czy można zrobić zamianę czy można dodać krawędź
+  - dodanie krawędzi zapytanie `/vertices/add-edge?source=wierchołek&direction=true/false`
+  - zamiana podgrafów `/vertices/switch`
+
+3. Wybranie krawędzi GET
+    - zapytanie do `/edges/can-remove` czy można usunąć
+    - usunięcie krawędzi zapytanie `/edges/remove`
+
+3. Zamiana krawędzi do wierchołka GET (wybranie krawedzi, dwa wierzchołki)
+    - zapytanie do `/edges/can-move`
+    - zamiana krawędzi zapytanie `/edges/move`
 #### Serwer
 REST API w Spring'u. Endpoint'y do obsługi modyfikacji na wierzchołkach i krawędziach
 ***
