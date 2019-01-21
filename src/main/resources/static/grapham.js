@@ -51,6 +51,15 @@ $(document).ready(function () {
 
     });
 
+    $("#switchEdge").click(() => {
+
+        const source = selectedEdge.source.name.substr(1);
+        const target = firstSelectedNode.name.substr(1);
+        const newTarget = secondSelectedNode.name.substr(1);
+        get('/edges/move', {source: source, target: target, newTarget: newTarget}, (data) => onLoadGraphSuccess(data), (error) => console.log(error));
+
+    });
+
 });
 
 function onChangeFileInput() {
@@ -82,6 +91,15 @@ function resetValues() {
     showManipulationOptions();
 }
 
+function ifSwitchEdge(data) {
+    if (data) {
+        document.getElementById("switchEdge").disabled = false;
+    } else {
+        document.getElementById("switchEdge").disabled = true;
+    }
+}
+
+
 function showManipulationOptions() {
     let singleSelectedNodeOptions = $('#singleSelectedNodeOptions');
     let twoSelectedNodesOptions = $('#twoSelectedNodesOptions');
@@ -102,6 +120,12 @@ function showManipulationOptions() {
     } else if (!firstSelectedNode && !secondSelectedNode && selectedEdge) {
         edgeOptions.removeAttr('hidden');
     } else if (firstSelectedNode && secondSelectedNode && selectedEdge) {
+
+        const source = selectedEdge.source.name.substr(1);
+        const target = firstSelectedNode.name.substr(1);
+        const newTarget = secondSelectedNode.name.substr(1);
+
+        get('/edges/can-move', {source: source, target: target, newTarget: newTarget}, (data) => ifSwitchEdge(data), (error) => console.log(error));
         switchEdgeOptions.removeAttr('hidden');
     }
 }
